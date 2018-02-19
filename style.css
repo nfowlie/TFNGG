@@ -3,13 +3,13 @@ body{
     display: flex;
     justify-content: center;
     margin:0;
-    overflow: hidden;
+    overflow: scroll;
 }
 
 #container{
     background-color: #ffffff;
-    min-height: 100vh;
-    width: 1100px;
+    max-width: 1100px;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +20,7 @@ body{
 #nav{
     height: 50px;
     width: 100%;
-    background-color: #333333;
+    background: linear-gradient(to right, #6754a4 20%, #268afa 80%);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -35,8 +35,9 @@ body{
 }
 
 .lootbox{
+    display: flex;
     width: 100%;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 67px);
     justify-content: center;
     align-items: center;
 }
@@ -52,9 +53,10 @@ body{
 
 .player{
     position: fixed;
+    background-color: #333333;
     bottom:0;
-    left:0;
-    width:100%;
+    width: 100%;
+    /* width:100%; */
 }
 
 audio{
@@ -63,10 +65,9 @@ audio{
 
 #tracks{   
     width: 100%;
-    height: calc(100vh - 50px);
-    display: flex;
+    min-height: calc(100vh - 67px);
+    display: none;
     flex-direction: column;
-    overflow: scroll;
 }
 
 .track{
