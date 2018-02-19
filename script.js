@@ -3,14 +3,19 @@ var unlockedSongs = window.localStorage;
 var tracksUnlocked = unlockedSongs.length - 1;
 var lootBox = document.querySelector(".lootbox-lock");
 
+// Clear Loot
+var clearLoot = function () {
+    window.localStorage.clear();
+    loadTracks(unlockedSongs);
+};
 
 // Navigation
-document.querySelector("#loot").addEventListener("click", function(){
+document.querySelector("#loot").addEventListener("click", function () {
     document.querySelector(".lootbox").style.display = "flex";
     document.querySelector("#tracks").style.display = "none";
 });
 
-document.querySelector("#track").addEventListener("click", function(){
+document.querySelector("#track").addEventListener("click", function () {
     document.querySelector(".lootbox").style.display = "none";
     document.querySelector("#tracks").style.display = "flex";
 });
@@ -30,13 +35,13 @@ lootBox.addEventListener("mouseup", function () {
     var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
     var trackTitle = track.title;
     var trackSrc = "./tracks/" + track.source;
-    
+
     lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
     getRandomIntInclusive(0, tracks.length);
     masterPlayer.src = trackSrc;
     masterPlayer.play();
     tracksUnlocked++;
-    unlockedSongs.setItem(tracksUnlocked, JSON.stringify({title: trackTitle, src: trackSrc}));
+    unlockedSongs.setItem(tracksUnlocked, JSON.stringify({ title: trackTitle, src: trackSrc }));
     loadTracks(unlockedSongs);
 });
 // Mouse Click Down
@@ -55,6 +60,11 @@ function getRandomIntInclusive(min, max) {
 var loadTracks = function (unlockedSongs) {
     var tracksContainer = document.querySelector("#tracks");
     tracksContainer.innerHTML = "";
+    var lootClearer = document.createElement("div");
+    lootClearer.textContent = "Empty Loot";
+    lootClearer.classList.add("clear");
+    lootClearer.addEventListener("click", function () { clearLoot(); });
+    tracksContainer.appendChild(lootClearer);
 
     for (var t = 0; t < unlockedSongs.length; t++) {
         var parsed = unlockedSongs.getItem(t);
@@ -67,7 +77,7 @@ var loadTracks = function (unlockedSongs) {
         trackPlayer.setAttribute("controls", "");
         trackPlayer.src = JSON.parse(parsed).src;
         track.appendChild(trackPlayer);
-        
+
         tracksContainer.appendChild(track);
     }
 };
