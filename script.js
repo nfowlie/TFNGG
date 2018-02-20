@@ -7,6 +7,7 @@ var lootBox = document.querySelector(".lootbox-lock");
 var clearLoot = function () {
     window.localStorage.clear();
     loadTracks(unlockedSongs);
+    tracksUnlocked = -1;
 };
 
 // Navigation
