@@ -19,6 +19,10 @@ document.querySelector("#loot").addEventListener("click", function () {
 document.querySelector("#track").addEventListener("click", function () {
     document.querySelector(".lootbox").style.display = "none";
     document.querySelector("#tracks").style.display = "flex";
+
+    var unlockModal = document.querySelector(".unlock-modal");
+    unlockModal.style.color = "#268afa";
+    unlockModal.style.opacity = "";
 });
 
 // Handles Lootbox 'Animation'
@@ -44,6 +48,7 @@ lootBox.addEventListener("mouseup", function () {
     tracksUnlocked++;
     unlockedSongs.setItem(tracksUnlocked, JSON.stringify({ title: trackTitle, src: trackSrc }));
     loadTracks(unlockedSongs);
+    displayUnlock(track);
 });
 // Mouse Click Down
 lootBox.addEventListener("mousedown", function () {
@@ -66,21 +71,55 @@ var loadTracks = function (unlockedSongs) {
     lootClearer.classList.add("clear");
     lootClearer.addEventListener("click", function () { clearLoot(); });
     tracksContainer.appendChild(lootClearer);
-
+    var appendContainer = document.createElement("div");
     for (var t = 0; t < unlockedSongs.length; t++) {
         var parsed = unlockedSongs.getItem(t);
         var track = document.createElement("div");
+        var trackSell = document.createElement("div");
+        trackSell.classList.add("sell");
+        trackSell.textContent = "SELL";
+        // Change to SHARD IT
+        trackSell.dataset.position = t;
+        trackSell.addEventListener("click", function(){
+            sellLoot(this.dataset.position);
+        });
         track.classList.add('track');
         var trackTitle = document.createElement("div");
         trackTitle.textContent = JSON.parse(parsed).title;
         track.appendChild(trackTitle);
+        track.appendChild(trackSell);
         var trackPlayer = document.createElement("audio");
         trackPlayer.setAttribute("controls", "");
         trackPlayer.src = JSON.parse(parsed).src;
         track.appendChild(trackPlayer);
 
-        tracksContainer.appendChild(track);
+        appendContainer.appendChild(track);
     }
+    tracksContainer.appendChild(appendContainer);
+};
+
+var displayUnlock = function(unlock){
+    var unlockModal = document.querySelector(".unlock-modal");
+    unlockModal.textContent = unlock.title;
+    unlockModal.style.opacity = "1";
+    unlockModal.style.color = "#ffffff";
+};
+
+var sellLoot = function(e){
+    console.log(e);
+    unlockedSongs.removeItem(e);
+    var songs = "";
+    songs = JSON.stringify(unlockedSongs);
+    unlockedSongs.clear();
+    songs = JSON.parse(songs);
+    console.log(songs);
+    var u = 0;
+    for(var key in songs){
+        unlockedSongs.setItem(u, songs[key]);
+        u++;
+    }
+    tracksUnlocked--;
+    loadTracks(unlockedSongs);
 };
 
 loadTracks(unlockedSongs);

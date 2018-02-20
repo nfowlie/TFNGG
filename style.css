@@ -34,12 +34,34 @@ body {
     cursor: pointer;
 }
 
+/* Lootbox */
 .lootbox {
     display: flex;
+    flex-direction: column;
     width: 100%;
     height: calc(100vh - 67px);
     justify-content: center;
     align-items: center;
+}
+
+.unlock-modal{
+    height: 50px;
+    width: 250px;
+    color: #268afa;
+    background:#268afa;
+    border-radius: 15px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 25px;
+    text-align: center;
+    position: relative;
+    top: 300px;
+    /* bottom: 50px; */
+    opacity: 0;
+    transition: 1s opacity ease-in-out, 3s color ease-in-out;
 }
 
 .lootbox-lock {
@@ -48,6 +70,8 @@ body {
     background-size: cover;
     background-image: url("./loot-box-edited.png");
     z-index: 12;
+    display: flex;
+    justify-content: center;
 }
 
 .player {
@@ -71,6 +95,11 @@ audio {
 
 .track {
     width: 100%;
+    font-family: sans-serif;
+    font-size: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .clear {
@@ -80,6 +109,18 @@ audio {
     font-family: sans-serif;
     color: #ffffff;
     text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sell{
+    height: 30px;
+    width: 125px;
+    background-color: #ff3333;
+    font-family: sans-serif;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
