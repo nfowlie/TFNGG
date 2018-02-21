@@ -34,7 +34,9 @@ body {
     cursor: pointer;
 }
 
+
 /* Lootbox */
+
 .lootbox {
     display: flex;
     flex-direction: column;
@@ -44,11 +46,49 @@ body {
     align-items: center;
 }
 
-.unlock-modal{
+.items{
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 55px;
+
+    width: 100%;
+}
+
+.item-image{
+    margin: 0 10px;
+    height: 50px;
+    width: 50px;
+    background-size: cover;
+}
+
+.numbers{
+    text-align: center;
+    font-family: sans-serif;
+    color:black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.numbers::before{
+    content: "x";
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.key {
+    background-image: url("./password.png");
+}
+
+.box{
+    background-image: url("./loot-box-cropped.png");
+}
+
+.unlock-modal {
     height: 50px;
     width: 250px;
     color: #268afa;
-    background:#268afa;
+    background: #268afa;
     border-radius: 15px;
     font-family: sans-serif;
     text-transform: uppercase;
@@ -115,7 +155,7 @@ audio {
     cursor: pointer;
 }
 
-.sell{
+.sell {
     height: 30px;
     width: 125px;
     background-color: #ff3333;
@@ -125,4 +165,13 @@ audio {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.sell-modal{
+    background-color: aqua;
+    height: 20px;
+    width: 20px;
+    position: absolute;
+    z-index: 2;
+    border-radius: 15px;
 }

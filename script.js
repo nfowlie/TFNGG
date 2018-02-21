@@ -77,8 +77,7 @@ var loadTracks = function (unlockedSongs) {
         var track = document.createElement("div");
         var trackSell = document.createElement("div");
         trackSell.classList.add("sell");
-        trackSell.textContent = "SELL";
-        // Change to SHARD IT
+        trackSell.textContent = "SHARD IT";
         trackSell.dataset.position = t;
         trackSell.addEventListener("click", function(){
             sellLoot(this.dataset.position);
@@ -120,6 +119,12 @@ var sellLoot = function(e){
     }
     tracksUnlocked--;
     loadTracks(unlockedSongs);
+
+    var sellModal = document.createElement("div");
+    sellModal.classList.add("sell-modal");
+    sellModal.textContent = "1 Keyshard Added";
+    document.querySelector("#tracks").appendChild(sellModal);
+
 };
 
 loadTracks(unlockedSongs);
