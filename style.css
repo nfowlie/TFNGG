@@ -86,7 +86,7 @@ body {
 .unlock-modal {
     height: 50px;
     width: 250px;
-    color: #268afa;
+    color: #ffffff;
     background: #268afa;
     border-radius: 15px;
     font-family: sans-serif;
@@ -99,8 +99,12 @@ body {
     position: relative;
     top: 300px;
     /* bottom: 50px; */
-    opacity: 1;
+    opacity: 0;
     user-select: none;
+}
+
+.unlock-modal.in{
+    opacity: 1;
     animation: 6s unlockFade;
 }
 
@@ -113,6 +117,23 @@ body {
     }
     100% {
         opacity: 1;
+    }
+}
+
+.unlock-modal.out{
+    opacity: 0;
+    animation: 6s unlockFadeAway;
+}
+
+@keyframes unlockFadeAway{
+    0%{
+        opacity: 1;
+    }
+    30%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 0;
     }
 }
 
