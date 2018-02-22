@@ -96,10 +96,16 @@ lootBox.addEventListener("mouseout", function () {
 });
 // Mouse Click Release
 var letBox = true;
+var firstBox = true;
 lootBox.addEventListener("mouseup", function () {
 
     if (keyNumber >= 1 && boxNumber > 0) {
         if (letBox) {
+            if (!firstBox) {
+                document.querySelector(".unlock-modal").classList.add("out");
+            }
+            firstBox = false;
+            document.querySelector(".unlock-modal").classList.remove("in");
             letBox = false;
             unlockingKey.classList.add("click");
             setTimeout(() => {
@@ -232,16 +238,21 @@ var displayUnlock = function (unlock) {
     // unlockModal.textContent = unlock.title;
     // unlockModal.style.opacity = "1";
     // unlockModal.style.color = "#ffffff";
-    if (document.querySelector(".unlock-modal")) {
-        document.querySelector(".unlock-modal").remove();
-    }
 
-    var unlockModal = document.createElement("div");
-    unlockModal.classList.add("unlock-modal");
-    unlockModal.textContent = unlock.title;
-    unlockModal.style.opacity = "1";
-    unlockModal.style.color = "#ffffff";
-    document.querySelector(".lootbox-lock").appendChild(unlockModal);
+    document.querySelector(".unlock-modal").classList.remove("out");
+    document.querySelector(".unlock-modal").classList.add("in");
+    document.querySelector(".unlock-modal").textContent = unlock.title;
+
+    // if (document.querySelector(".unlock-modal")) {
+    //     document.querySelector(".unlock-modal").remove();
+    // }
+
+    // var unlockModal = document.createElement("div");
+    // unlockModal.classList.add("unlock-modal");
+    // unlockModal.textContent = unlock.title;
+    // unlockModal.style.opacity = "1";
+    // unlockModal.style.color = "#ffffff";
+    // document.querySelector(".lootbox-lock").appendChild(unlockModal);
 };
 
 var sellLoot = function (e) {
