@@ -54,7 +54,7 @@ var clearLoot = function () {
 // Navigation
 document.querySelector("#loot").addEventListener("click", function () {
     if (document.querySelector(".unlock-modal")) {
-        document.querySelector(".unlock-modal").remove();
+        // unlockingKey.classList.add("out");
     }
     document.querySelector(".lootbox").style.display = "flex";
     document.querySelector("#tracks").style.display = "none";
