@@ -1,4 +1,4 @@
-window.localStorage.clear();
+// window.localStorage.clear();
 
 var unlockedSongs = window.localStorage;
 if (window.localStorage.length <= 0) {
@@ -9,7 +9,8 @@ if (window.localStorage.length <= 0) {
 // console.log(unlockedSongs.getItem("keys"));
 if (unlockedSongs.getItem("tracks")) {
     if (unlockedSongs.getItem("tracks") !== "null") {
-        var tracksUnlocked = unlockedSongs.getItem("tracks").length - 1;
+        var holder = JSON.parse(unlockedSongs.getItem("tracks"));
+        var tracksUnlocked = Object.keys(holder).length - 1;
     }
     else {
         tracksUnlocked = -1;
