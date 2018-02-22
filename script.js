@@ -7,7 +7,7 @@ var boxNumber;
 var myVar;
 
 function myFunction() {
-    myVar = setTimeout(function(){ document.querySelector(".sell-modal").remove(); }, 6000);
+    myVar = setTimeout(function () { document.querySelector(".sell-modal").remove(); }, 6000);
 }
 
 function myStopFunction() {
@@ -18,6 +18,11 @@ if (window.localStorage.length <= 0) {
     unlockedSongs.setItem("keys", 10);
     unlockedSongs.setItem("boxes", 10);
     unlockedSongs.setItem("tracks", null);
+    
+    document.querySelector(".tutorial-modal").style.display = "flex";
+    document.querySelector(".tutorial-modal-close").addEventListener("click", function(){
+        document.querySelector(".tutorial-modal").remove();
+    });
 }
 
 // console.log(unlockedSongs.getItem("keys"));
@@ -41,6 +46,9 @@ var clearLoot = function () {
 
 // Navigation
 document.querySelector("#loot").addEventListener("click", function () {
+    if (document.querySelector(".unlock-modal")) {
+        document.querySelector(".unlock-modal").remove();
+    }
     document.querySelector(".lootbox").style.display = "flex";
     document.querySelector("#tracks").style.display = "none";
 });
@@ -49,9 +57,20 @@ document.querySelector("#track").addEventListener("click", function () {
     document.querySelector(".lootbox").style.display = "none";
     document.querySelector("#tracks").style.display = "flex";
 
-    var unlockModal = document.querySelector(".unlock-modal");
-    unlockModal.style.color = "#268afa";
-    unlockModal.style.opacity = "";
+    // var unlockModal = document.querySelector(".unlock-modal");
+    // unlockModal.style.color = "#268afa";
+    // unlockModal.style.opacity = "";
+});
+
+// Get Keys and Boxes
+document.querySelector(".items > .keys").addEventListener("click", function () {
+    keyNumber++;
+    setKey();
+});
+
+document.querySelector(".items > .boxes").addEventListener("click", function () {
+    boxNumber++;
+    setBox();
 });
 
 // Handles Lootbox 'Animation'
@@ -65,7 +84,7 @@ lootBox.addEventListener("mouseout", function () {
 });
 // Mouse Click Release
 lootBox.addEventListener("mouseup", function () {
-    if (keyNumber > 0 && boxNumber > 0) {
+    if (keyNumber >= 1 && boxNumber > 0) {
         var masterPlayer = document.querySelector(".player audio");
         var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
         var trackTitle = track.title;
@@ -115,6 +134,7 @@ function getRandomIntInclusive(min, max) {
 var loadKeysBoxes = function () {
     keyNumber = parseFloat(unlockedSongs.getItem("keys"));
     document.querySelector(".keys > .numbers").textContent = Math.floor(keyNumber);
+    setKey();
 
     boxNumber = parseFloat(unlockedSongs.getItem("boxes"));
     document.querySelector(".boxes > .numbers").textContent = Math.floor(boxNumber);
@@ -186,10 +206,20 @@ var loadTracks = function (unlockedSongss) {
 };
 
 var displayUnlock = function (unlock) {
-    var unlockModal = document.querySelector(".unlock-modal");
+    // var unlockModal = document.querySelector(".unlock-modal");
+    // unlockModal.textContent = unlock.title;
+    // unlockModal.style.opacity = "1";
+    // unlockModal.style.color = "#ffffff";
+    if (document.querySelector(".unlock-modal")) {
+        document.querySelector(".unlock-modal").remove();
+    }
+
+    var unlockModal = document.createElement("div");
+    unlockModal.classList.add("unlock-modal");
     unlockModal.textContent = unlock.title;
     unlockModal.style.opacity = "1";
     unlockModal.style.color = "#ffffff";
+    document.querySelector(".lootbox-lock").appendChild(unlockModal);
 };
 
 var sellLoot = function (e) {
