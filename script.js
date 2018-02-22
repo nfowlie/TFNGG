@@ -1,8 +1,22 @@
-// window.localStorage.clear();
+window.localStorage.clear();
 
 var unlockedSongs = window.localStorage;
+var keyNumber;
+var boxNumber;
+
+var myVar;
+
+function myFunction() {
+    myVar = setTimeout(function(){ document.querySelector(".sell-modal").remove(); }, 6000);
+}
+
+function myStopFunction() {
+    clearTimeout(myVar);
+}
+
 if (window.localStorage.length <= 0) {
-    unlockedSongs.setItem("keys", 1);
+    unlockedSongs.setItem("keys", 10);
+    unlockedSongs.setItem("boxes", 10);
     unlockedSongs.setItem("tracks", null);
 }
 
@@ -51,32 +65,39 @@ lootBox.addEventListener("mouseout", function () {
 });
 // Mouse Click Release
 lootBox.addEventListener("mouseup", function () {
-    var masterPlayer = document.querySelector(".player audio");
-    var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
-    var trackTitle = track.title;
-    var trackSrc = "./tracks/" + track.source;
+    if (keyNumber > 0 && boxNumber > 0) {
+        var masterPlayer = document.querySelector(".player audio");
+        var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
+        var trackTitle = track.title;
+        var trackSrc = "./tracks/" + track.source;
 
-    lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
-    getRandomIntInclusive(0, tracks.length);
-    masterPlayer.src = trackSrc;
-    masterPlayer.play();
-    tracksUnlocked++;
-    var prevTracks
-    if (unlockedSongs.getItem("tracks") !== "null" && unlockedSongs.getItem("tracks") !== "{}") {
-        prevTracks = unlockedSongs.getItem("tracks");
-        unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
-        var newSong = unlockedSongs.getItem("tracks");
-        unlockedSongs.setItem("tracks", (prevTracks.slice(0, -1) + "," + newSong.substr(1)));
-        loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
-    }
-    else {
-        unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
-        loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
-    }
-    console.log(unlockedSongs.getItem("tracks"));
-    console.log(JSON.parse(unlockedSongs.getItem("tracks")));
+        lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
+        getRandomIntInclusive(0, tracks.length);
+        masterPlayer.src = trackSrc;
+        masterPlayer.play();
+        tracksUnlocked++;
+        keyNumber--;
+        boxNumber--;
+        setKey();
+        setBox();
 
-    displayUnlock(track);
+        var prevTracks
+        if (unlockedSongs.getItem("tracks") !== "null" && unlockedSongs.getItem("tracks") !== "{}") {
+            prevTracks = unlockedSongs.getItem("tracks");
+            unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
+            var newSong = unlockedSongs.getItem("tracks");
+            unlockedSongs.setItem("tracks", (prevTracks.slice(0, -1) + "," + newSong.substr(1)));
+            loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
+        }
+        else {
+            unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
+            loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
+        }
+        console.log(unlockedSongs.getItem("tracks"));
+        console.log(JSON.parse(unlockedSongs.getItem("tracks")));
+
+        displayUnlock(track);
+    }
 });
 // Mouse Click Down
 lootBox.addEventListener("mousedown", function () {
@@ -88,6 +109,37 @@ function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+
+// Crappy Lootbox stuff
+var loadKeysBoxes = function () {
+    keyNumber = parseFloat(unlockedSongs.getItem("keys"));
+    document.querySelector(".keys > .numbers").textContent = Math.floor(keyNumber);
+
+    boxNumber = parseFloat(unlockedSongs.getItem("boxes"));
+    document.querySelector(".boxes > .numbers").textContent = Math.floor(boxNumber);
+};
+
+var setKey = function () {
+    var keyImage = document.querySelector(".keys");
+    unlockedSongs.setItem("keys", keyNumber);
+    var keyHolder = keyNumber % 1;
+    keyImage.children[1].textContent = Math.floor(keyNumber);
+    if (keyHolder > .1 && keyHolder < .4) {
+        keyImage.children[0].style.backgroundImage = 'url("./password1-3.png")';
+    }
+    else if (keyHolder > .5 && keyHolder < .7) {
+        keyImage.children[0].style.backgroundImage = 'url("./password2-3.png")';
+    }
+    else {
+        keyImage.children[0].style.backgroundImage = 'url("./password3-3.png")';
+    }
+};
+
+var setBox = function () {
+    var boxImage = document.querySelector(".boxes > .numbers");
+    unlockedSongs.setItem("boxes", boxNumber);
+    boxImage.textContent = boxNumber;
 }
 
 // Load Tracks
@@ -162,18 +214,34 @@ var sellLoot = function (e) {
     }
     unlockedSongs.setItem("tracks", JSON.stringify(tempSongs));
     tracksUnlocked--;
+    var keyTemp = keyNumber % 1;
+    if (keyTemp > 0.1 && keyTemp < 0.4) {
+        keyNumber = Math.floor(keyNumber) + 0.6;
+    }
+    else if (keyTemp > 0.5 && keyTemp < 0.7) {
+        keyNumber = Math.floor(keyNumber) + 1;
+    }
+    else {
+        keyNumber = Math.floor(keyNumber) + 0.3;
+    }
+
+    setKey();
+
     console.log(tempSongs);
     loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
 
     var sellModal = document.createElement("div");
     sellModal.classList.add("sell-modal");
     sellModal.textContent = "1 Keyshard Added";
+
     document.querySelector("#tracks").appendChild(sellModal);
 
+    myStopFunction();
+    myFunction();
 };
 
 loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
-console.log(JSON.stringify(unlockedSongs.getItem("keys")));
+loadKeysBoxes();
 
 
 
