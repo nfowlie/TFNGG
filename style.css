@@ -34,7 +34,9 @@ body {
     cursor: pointer;
 }
 
+
 /* Lootbox */
+
 .lootbox {
     display: flex;
     flex-direction: column;
@@ -44,11 +46,48 @@ body {
     align-items: center;
 }
 
-.unlock-modal{
+.items {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 55px;
+    width: 100%;
+}
+
+.item-image {
+    margin: 0 10px;
+    height: 50px;
+    width: 50px;
+    background-size: cover;
+}
+
+.numbers {
+    text-align: center;
+    font-family: sans-serif;
+    color: black;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.numbers::before {
+    content: "x";
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.key {
+    background-image: url("./password.png");
+}
+
+.box {
+    background-image: url("./loot-box-edited.png");
+}
+
+.unlock-modal {
     height: 50px;
     width: 250px;
     color: #268afa;
-    background:#268afa;
+    background: #268afa;
     border-radius: 15px;
     font-family: sans-serif;
     text-transform: uppercase;
@@ -60,8 +99,21 @@ body {
     position: relative;
     top: 300px;
     /* bottom: 50px; */
-    opacity: 0;
-    transition: 1s opacity ease-in-out, 3s color ease-in-out;
+    opacity: 1;
+    user-select: none;
+    animation: 6s unlockFade;
+}
+
+@keyframes unlockFade {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .lootbox-lock {
@@ -72,6 +124,7 @@ body {
     z-index: 12;
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .player {
@@ -115,7 +168,7 @@ audio {
     cursor: pointer;
 }
 
-.sell{
+.sell {
     height: 30px;
     width: 125px;
     background-color: #ff3333;
@@ -125,4 +178,138 @@ audio {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+}
+
+.sell-modal {
+    background-color: rgba(0, 255, 0, .85);
+    height: 50px;
+    width: 180px;
+    position: absolute;
+    z-index: 2;
+    border-radius: 5px;
+    font-size: 20px;
+    color: #ffffff;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: 6s sellFade;
+    right: 20px;
+    top: 85px;
+}
+
+@keyframes sellFade {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.tutorial-modal {
+    height: 80vh;
+    max-width: 1100px;
+    width: 100vw;
+    position: fixed;
+    background-color: #ffffff;
+    z-index: 100;
+    top: 50px;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.tutorial-modal-close {
+    position: relative;
+    background-color: #ff3333;
+    height: 50px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    content: "X";
+    font-family: sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.tutorial-modal-text {
+    font-size: 45px;
+    font-family: sans-serif;
+    width: 80%;
+    text-align: center;
+    padding: 0 10vw;
+}
+
+.text {
+    font-size: 25px;
+    margin-top: 50px;
+}
+
+.unlocking-key {
+    background-image: url("./Rotated-key.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 90px;
+    width: 222.509px;
+    position: absolute;
+    z-index: 30;
+    left: -218px;
+    top: 140px;
+    opacity: 0;
+}
+
+.unlocking-key.hover {
+    animation: 1s unlockHover;
+    opacity: 1;
+}
+
+@keyframes unlockHover {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.unlocking-key.out{
+    opacity: 0;
+    animation: 1s unlockOut;
+}
+
+@keyframes unlockOut{
+    0%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.unlocking-key.click {
+    animation: 3s unlock;
+}
+
+@keyframes unlock {
+    0% {}
+    50% {
+        left: 0;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        left: 0;
+    }
 }
