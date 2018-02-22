@@ -1,8 +1,9 @@
-window.localStorage.clear();
+// window.localStorage.clear();
 
 var unlockedSongs = window.localStorage;
 var keyNumber;
 var boxNumber;
+var unlockingKey = document.querySelector(".unlocking-key");
 
 var myVar;
 
@@ -14,13 +15,19 @@ function myStopFunction() {
     clearTimeout(myVar);
 }
 
+var clickTimeout;
+
+// function clickFunction(){
+//     clickTimeout = setTimeout(function())
+// }
+
 if (window.localStorage.length <= 0) {
     unlockedSongs.setItem("keys", 10);
     unlockedSongs.setItem("boxes", 10);
     unlockedSongs.setItem("tracks", null);
-    
+
     document.querySelector(".tutorial-modal").style.display = "flex";
-    document.querySelector(".tutorial-modal-close").addEventListener("click", function(){
+    document.querySelector(".tutorial-modal-close").addEventListener("click", function () {
         document.querySelector(".tutorial-modal").remove();
     });
 }
@@ -76,51 +83,66 @@ document.querySelector(".items > .boxes").addEventListener("click", function () 
 // Handles Lootbox 'Animation'
 // Mouse Enter
 lootBox.addEventListener("mouseover", function () {
-    lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
+    // // lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
+    unlockingKey.classList.add("hover");
+    unlockingKey.classList.remove("out");
 });
 // Mouse Leave
 lootBox.addEventListener("mouseout", function () {
-    lootBox.style.backgroundImage = 'url("./loot-box-edited.png")';
+    // lootBox.style.backgroundImage = 'url("./loot-box-edited.png")';
+    if (!unlockingKey.classList.contains("click")) {
+        unlockingKey.classList.add("out");
+    }
 });
 // Mouse Click Release
+var letBox = true;
 lootBox.addEventListener("mouseup", function () {
+
     if (keyNumber >= 1 && boxNumber > 0) {
-        var masterPlayer = document.querySelector(".player audio");
-        var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
-        var trackTitle = track.title;
-        var trackSrc = "./tracks/" + track.source;
+        if (letBox) {
+            letBox = false;
+            unlockingKey.classList.add("click");
+            setTimeout(() => {
+                unlockingKey.classList.remove("click", "out", "hover");
+            }, 3000);
+            clickTimeout = setTimeout(() => {
+                var masterPlayer = document.querySelector(".player audio");
+                var track = tracks[getRandomIntInclusive(0, tracks.length - 1)];
+                var trackTitle = track.title;
+                var trackSrc = "./tracks/" + track.source;
 
-        lootBox.style.backgroundImage = 'url("./loot-box-edited-pressed.png")';
-        getRandomIntInclusive(0, tracks.length);
-        masterPlayer.src = trackSrc;
-        masterPlayer.play();
-        tracksUnlocked++;
-        keyNumber--;
-        boxNumber--;
-        setKey();
-        setBox();
+                getRandomIntInclusive(0, tracks.length);
+                masterPlayer.src = trackSrc;
+                masterPlayer.play();
+                tracksUnlocked++;
+                keyNumber--;
+                boxNumber--;
+                setKey();
+                setBox();
 
-        var prevTracks
-        if (unlockedSongs.getItem("tracks") !== "null" && unlockedSongs.getItem("tracks") !== "{}") {
-            prevTracks = unlockedSongs.getItem("tracks");
-            unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
-            var newSong = unlockedSongs.getItem("tracks");
-            unlockedSongs.setItem("tracks", (prevTracks.slice(0, -1) + "," + newSong.substr(1)));
-            loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
+                var prevTracks
+                if (unlockedSongs.getItem("tracks") !== "null" && unlockedSongs.getItem("tracks") !== "{}") {
+                    prevTracks = unlockedSongs.getItem("tracks");
+                    unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
+                    var newSong = unlockedSongs.getItem("tracks");
+                    unlockedSongs.setItem("tracks", (prevTracks.slice(0, -1) + "," + newSong.substr(1)));
+                    loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
+                }
+                else {
+                    unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
+                    loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
+                }
+                // console.log(unlockedSongs.getItem("tracks"));
+                // console.log(JSON.parse(unlockedSongs.getItem("tracks")));
+
+                displayUnlock(track);
+                letBox = true;
+            }, 3000);
         }
-        else {
-            unlockedSongs.setItem("tracks", JSON.stringify({ [tracksUnlocked]: { title: trackTitle, src: trackSrc } }));
-            loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
-        }
-        console.log(unlockedSongs.getItem("tracks"));
-        console.log(JSON.parse(unlockedSongs.getItem("tracks")));
-
-        displayUnlock(track);
     }
 });
 // Mouse Click Down
 lootBox.addEventListener("mousedown", function () {
-    lootBox.style.backgroundImage = 'url("./loot-box-edited-clicked.png")';
 });
 
 // Random Number Generator
@@ -180,7 +202,7 @@ var loadTracks = function (unlockedSongss) {
         var appendContainer = document.createElement("div");
         for (var t = 0; t < Object.keys(unlockedSongss).length; t++) {
             var parsed = unlockedSongss[t];
-            console.log(parsed);
+            // console.log(parsed);
             var track = document.createElement("div");
             var trackSell = document.createElement("div");
             trackSell.classList.add("sell");
@@ -223,7 +245,7 @@ var displayUnlock = function (unlock) {
 };
 
 var sellLoot = function (e) {
-    console.log(e);
+    // console.log(e);
     unlockedSongs.removeItem(e);
     var songs = "";
     songs = JSON.parse(unlockedSongs.getItem("tracks"));
@@ -232,7 +254,7 @@ var sellLoot = function (e) {
 
     unlockedSongs.setItem("tracks", null);
     // songs = JSON.parse(songs);
-    console.log(songs);
+    // console.log(songs);
     var u = 0;
     var tempSongs = {};
     for (var key in songs) {
@@ -257,7 +279,7 @@ var sellLoot = function (e) {
 
     setKey();
 
-    console.log(tempSongs);
+    // console.log(tempSongs);
     loadTracks(JSON.parse(unlockedSongs.getItem("tracks")));
 
     var sellModal = document.createElement("div");
