@@ -74,5 +74,5 @@ tracks = [
     { id: 0, title: "98 - Cause It's The News Song", source: "98-N.mp3", type: "News"},
     { id: 0, title: "98 - To Find A Host", source: "98-A.mp3", type: "Ads"},
     { id: 0, title: "99 - Pissed Off Lanzo", source: "99-N.mp3", type: "News"},
-    { id: 0, title: "99 - To Find A Host", source: "99-A.mp3", type: "Ads"},
+    { id: 0, title: "99 - To Find A Host", source: "99-A.mp3", type: "Ads"}
 ];
